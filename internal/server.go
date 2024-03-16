@@ -1,19 +1,16 @@
 package internal
 
 import (
+	"log"
 	"net/http"
-
-	"github.com/go-chi/chi"
 )
-
-type Server struct {
-	Router *chi.Mux
-}
 
 func Run() {
 
-	router := setUpRouter()
-	ser := Server{Router: router}
+	server := setUpRouter()
+	defer server.db.DB.Close()
+	log.Println("Server listening on port 3000 ")
+	http.ListenAndServe(":3000", server.router)
+	log.Fatal("Server is closed")
 
-	http.ListenAndServe(":3000", ser.Router)
 }
