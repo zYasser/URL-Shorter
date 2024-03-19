@@ -3,14 +3,16 @@ package internal
 import (
 	"log"
 	"net/http"
+	"URIShorter/internal/controller"
+
 )
 
 func Run() {
 
-	server := setUpRouter()
-	defer server.db.DB.Close()
+	server := controller.SetUpRouter()
+	defer server.DB.DB.Close()
 	log.Println("Server listening on port 3000 ")
-	http.ListenAndServe(":3000", server.router)
+	http.ListenAndServe(":3000", server.Router)
 	log.Fatal("Server is closed")
 
 }

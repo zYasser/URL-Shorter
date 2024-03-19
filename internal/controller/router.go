@@ -1,22 +1,21 @@
-package internal
+package controller
 
 import (
 	"log"
 	"net/http"
 
-	"URIShorter/internal/controller"
 	"URIShorter/internal/model"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 )
 
-type config struct {
-	db     model.Query
-	router *chi.Mux
+type Config struct {
+	DB     model.Query
+	Router *chi.Mux
 }
 
-func setUpRouter() *config {
+func SetUpRouter() *Config {
 	log.Println("Set up a router")
 
 	r := chi.NewRouter()
@@ -24,8 +23,8 @@ func setUpRouter() *config {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
 	})
-	r.Post("/new_url", controller.HandlerURL)
-	con := &config{db: model.OpenDB(), router: r}
+	con := &Config{DB: model.OpenDB(), Router: r}
+	r.Post("/new_url", con.handlerURL)
 	log.Println("Finished Set up router")
 
 	return con
